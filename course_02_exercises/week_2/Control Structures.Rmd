@@ -1,0 +1,68 @@
+---
+title: "Control Structures"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Conditional Statements
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r if else, echo=FALSE}
+x <- 5
+if(x > 3){
+  y <- 10
+}else{
+  y <- 0  
+}
+ 
+print(y)
+
+y <- if(x > 6){
+  20
+}else{
+  1
+}
+  
+print(y)
+```
+
+## For Loops
+
+Standard for loop:
+```{r for_loops}
+
+for(i in 1:10){
+  print(i)
+}
+```
+
+Using seq_along:
+```{r seq_along}
+
+x <- c("a","b","c","d")
+for(j in seq_along(x)){
+  print(x[j])
+}
+
+```
+
+Using values from the vectors:
+```{r get_vector}
+
+x <- c("a","b","c","d")
+for(letter in x){
+  print(letter)
+}
+```
+
+Using no braces:
+```{r no_braces}
+
+x <- c("a","b","c","d")
+for(i in 1:4)print(x[i])
