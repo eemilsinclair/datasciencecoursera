@@ -13,7 +13,7 @@ This is an R Markdown document. Markdown is a simple formatting syntax for autho
 
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
-```{r if else, echo=FALSE}
+```{r if_else}
 x <- 5
 if(x > 3){
   y <- 10
@@ -66,3 +66,19 @@ Using no braces:
 
 x <- c("a","b","c","d")
 for(i in 1:4)print(x[i])
+```
+
+Nested for loops:
+```{r nested_for_loops}
+
+x <- matrix(1:6,2,3)
+print(x)
+
+for(i in seq_len(nrow(x))){
+  for(j in seq_len(ncol(x))){
+    print(x[i,j])
+  }
+}
+
+
+```

@@ -1,0 +1,73 @@
+---
+title: "Control Structures 2"
+author: "eemilSinclair"
+date: "5/18/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## While Loops
+
+Example of while loops. There are useful because they are easy to read, but if the counter variable is not handled correctly, they can become infinite quite fast.
+
+```{r while}
+count <- 0
+while(count < 10){
+  print(count)
+  count <- count + 1
+}
+```
+
+Multiple conditions on a while loop. Conditions are evaluated from left to right:
+```{r multiple_cond_while}
+
+z <- 5
+while(z >= 3 && z < 10){
+  print(z)
+  
+  coin <- rbinom(1,1,0.5)
+  print(c("coin",coin))
+  
+  if(coin == 1){
+    z <- z +1
+  }else{
+    z <- z - 1
+  }
+}
+
+```
+
+## Repeat, next, break
+
+Repeat initiates an infinite loop. We can exit using 'break':
+```{r repeat}
+
+x0 <- 1
+tol <- 1e-8
+
+repeat{
+  x1 <- 0.123443
+  print(x1)
+  if(abs(x1 - x0) < tol){
+    break
+  }else{
+    x0 <- x1
+  }
+}
+
+```
+
+Next allows skiping to the next iteration. 'return' exits the fuction and return a given value.
+```{r next}
+
+for(i in 1:100){
+  if(i <= 20){
+    ##Skip the first 20 iterations...
+    next
+  }
+  print(i)
+}
+```

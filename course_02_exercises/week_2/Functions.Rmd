@@ -1,0 +1,55 @@
+---
+title: "Functions"
+author: "eemilSinclair"
+date: "5/18/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Functions
+
+Hello World!
+```{r hello_world}
+add2 <- function(x, y){
+  x + y
+}
+```
+
+Return the subset of a vector above values:
+```{r above_10}
+
+above10 <- function(x){
+  use <- x > 10
+  x[use]
+}
+
+above <- function(x,n){
+  use <- x > n
+  x[use]
+}
+
+
+abovedefault <- function(x,n=25){
+  use <- x > n
+  x[use]
+}
+```
+
+Function to extract the mean of each column. Adding the removeNA parameter of the function to remove NA values on the original dataframe.
+```{r column_mean, echo=FALSE, message=FALSE}
+
+columnmean <- function(y, removeNA = TRUE){
+  nc <- ncol(y)
+  means <- numeric(nc)
+  
+  for(i in 1:nc){
+    means[i] <- mean(y[,i], na.rm = removeNA)
+  }
+  
+  means
+}
+
+```
