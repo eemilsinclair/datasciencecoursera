@@ -11,6 +11,35 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Functions
 
+Functions are first class objects. You can pass functions as arguments to other functions, as well as have nested functions. The return expression is the last evaluated line inside the function.
+
+Functions have named arguments:
+
+* Formal argument: included in the function definition.
+* The 'formals' function returns a list of the formal aguments in a function.
+* Not every function in R makes use of the formal arguments.
+* Function arguments might be missing or have default values.
+
+R function arguments can be matched by **position** or by **name**. When an argument is matched by name, it is taken out of the argument list and the next unnamed arguments are matched in the order they're listed.
+
+### Partial Matching
+
+The order of operations when given an argument is:
+
+1. Exact match
+2. Partial match
+3. Position match
+
+```{r formals}
+formals(lm);
+
+```
+
+```{r args}
+args(lm);
+
+```
+
 Hello World!
 ```{r hello_world}
 add2 <- function(x, y){
@@ -52,4 +81,49 @@ columnmean <- function(y, removeNA = TRUE){
   means
 }
 
+```
+
+## Lazy Evaluation
+
+Evalute functions only when they are needed. For example, 'b' is never evaluated, so there will not be an error because 2 gets pisitionally matched at 'a'.
+```{R lazyev}
+f <- function(a,b){
+  a^2
+}
+
+f(2)
+```
+
+```{R lazyev2}
+f <- function(a,b){
+  print(a)
+  
+  #Commenting as this will not work!
+  #print(b)
+}
+
+f(2)
+```
+
+# The '...' Argument
+
+Indicates a vaariable number of arguments. Used to extend other functions without writing the whole argument list of the original.
+```{r dotdotdot}
+
+#Extending the plot function
+myplot <- function(x,y,type=1,...){
+  plot(x,y,type=type,...)
+}
+
+#Use in generic functions to pass extra arguments to methods
+#No example so far...
+
+# When number of arguments can't be known in advance:
+args(paste)
+
+args(cat)
+
+# All the arguments coming after '...' must be explicitly matched
+args(paste)
+paste("a","b",se=":")
 ```
