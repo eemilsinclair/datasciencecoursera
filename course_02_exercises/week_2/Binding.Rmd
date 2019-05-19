@@ -1,0 +1,107 @@
+---
+title: "Binding Values to Symbol"
+author: "eemilSinclair"
+date: "5/18/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Binding
+
+When R tries to bind a value to a symbol it searches through a series of environments to find the appropriate value. The order is:
+
+1. Global enviroment
+2. Namespaces of each package on the list
+
+```{r namespace}
+search()
+```
+
+* Global Enviroment is the first package in the list
+* Base package is always the last
+* Order matters!
+* Users **can configure** which packages get loaded on startup
+* Loading packages with 'library' the namespace of the package gets put into second position of the list
+* There are **separte** namespaces for functions and non-functions. So you can have a vector and a function named 'c'
+
+## Environments
+Is a collection of symbol/value pairs. They can have parent environments, and a parent can have multiple children. The only enviroment without a parent is the empty environment.
+
+A function plus an enviroment equals a **closure** or **function closure**.
+
+## Scoping Rules
+
+* Function arguments: available at the definition of the function.
+* The are other symbols not defined by function arguments.
+
+So we have alternatives:
+
+### 1. Lexical or Static Scoping:
+
+Useful for statistic calculations. The value of free variables is searched in the enviroment the function was defined in.
+```{R lexical_scoping}
+  f <- function(x, y){
+    
+    #'z' is a free variable. Free variables are not local variales nor formal arguments.
+    x^2 + y / z
+  }
+```
+
+1. A free value is first searched for in the environment where the function was defined (can be the global).
+2. If it's not there, it will look in the parent environment, until it hits the top-level environment.
+3. Then it goes to the next enviroment on the list and its parents. 
+4. Not found? Looks in the empty environment.
+5. Not found yet? **ERROR**
+
+**KEY DIFFERENCE WITH OTHER LANGUAGES**
+If a function is defined inside another function, the environment of the first function is the second one.
+```{R nested_functions_env}
+
+make.power <- function(n){
+  pow <- function(x){
+    x^n
+  }
+  pow
+}
+
+cube <- make.power(3)
+square <- make.power(2)
+cube(4)
+square(5)
+```
+
+Exploring a function closure:
+```{R closure}
+ls(environment(cube))
+get("n",environment(cube))
+
+ls(environment(square))
+get("n",environment(square))
+```
+
+### 2. Dynamic Scoping
+```{R dynamic_scoping}
+y <- 10
+
+f <- function(x){
+  #Local variable
+  y <- 2
+  
+  #y is in the same calling environment (2).
+  y^2 + g(x)
+}
+
+g <- function(x){
+  
+  #y is called from the function's parent frame (10).
+  x*y
+}
+
+f(3)
+
+```
+
+When a function is defined in the global environment, and it is called from the global environment, then the defining and the calling environment are the same. This is not dynamic scoping.
