@@ -1,15 +1,19 @@
-complete <- function(directory, id=1:332){
-  fileNames <- paste0(directory, "/", sprintf("%03d",id), ".csv")
-  csvData <- lapply(fileNames, read.csv)
-  csvData.bind <- do.call(rbind, csvData)
+library("plyr")
+library("dplyr")
+
+complete <- function(directory, id =1:332){
   
-  csvData.group <- csvData.bind[complete.cases(csvData.bind), ]
-  n <- data.frame(table(csvData.group$ID))
-  colnames(n) <- c("id","nobs")
-  n
+  ##Get the data from each file.
+  fileNames = paste0(directory,"/",sprintf("%03d",id), ".csv")
+  df.data <- ldply(lapply(fileNames, read.csv),data.frame)
+  
+  df.cc <- df.data[complete.cases(df.data),]
+  
+  ddply(df.cc, .(ID), summarize, nobs = n())
+  
 }
 
-set.seed(42)
-cc <- complete("specdata", 332:1)
-use <- sample(332, 10)
-print(cc[use, "nobs"])
+complete("specdata", 1)
+complete("specdata", c(2, 4, 8, 10, 12))
+complete("specdata", 30:25)
+complete("specdata", 3)

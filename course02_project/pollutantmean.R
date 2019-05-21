@@ -1,14 +1,21 @@
-library("data.table")
+install.packages("plyr")
+library("plyr")
 
 pollutantmean <- function(directory, pollutant, id = 1:332){
   
-  fileNames <- paste0(directory, "/", sprintf("%03d",id), ".csv")
-  csvData <- lapply(fileNames, read.csv)
-  csvData.bind <- do.call(rbind, csvData)
+  ##Get the data from each file.
+  fileNames = paste0(directory,"/",sprintf("%03d",id), ".csv")
+  df.data <- ldply(lapply(fileNames, read.csv),data.frame)
   
-  csvData.sub <- subset(csvData.bind, ID = id, select=pollutant)
-  mean(unlist(csvData.sub), na.rm = TRUE)
+  #Subset the data based on range and pollutant.
+  df.sub <- subset(df.data, ID = id, select=pollutant)
+  
+  #Calculate and return the mean.  
+  as.numeric(colMeans(x=df.sub, na.rm=TRUE))
   
 }
 
-pollutantmean("specdata", "nitrate")
+pollutantmean("specdata", "sulfate", 1:10)
+pollutantmean("specdata", "nitrate", 70:72)
+pollutantmean("specdata", "nitrate", 23)
+
