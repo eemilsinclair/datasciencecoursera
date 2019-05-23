@@ -1,0 +1,39 @@
+---
+title: "Debugging"
+author: "eemilSinclair"
+date: "5/22/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Invisible function
+
+No auto-printing.
+
+```{r invisible}
+
+printmessage <- function(x){
+  if(is.na(x))
+    print("is NA!!")
+  else if(x > 0)
+    print("X is greater than zero")
+  else
+    print("Less or equal than zero")
+  
+  invisible(x)
+} 
+
+printmessage(4)
+printmessage(NA)
+```
+
+## Debugging Tools
+
+1. traceback function: prints the call stack after an error.
+2. debug: flags a function for debug mode, which means step by step execution.
+3. browser: suspends execution when called and puts the function in debug mode.
+4. trace: insdert debugging code.
+5. recover: modify the error behavior so we can browse the function call stack.

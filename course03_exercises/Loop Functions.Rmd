@@ -1,0 +1,134 @@
+---
+title: "Loop Functions"
+author: "eemilSinclair"
+date: "5/22/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Loop Functions
+
+### lapply Function.
+
+Loop over a list of objects and apply that function on each element of the list. 3 arguments: the list, a function to apply, and other functions by ...
+
+If X is not a list, X is coerced to a list using as.list
+
+```{r lapply1}
+x <- list(a=1:5, b=rnorm(10))
+y <-lapply(x, mean)
+print(y)
+class(y)
+```
+```{r lapply2}
+x <- 1:4
+y <-lapply(x, runif, min=0, max=10)
+print(y)
+class(y)
+```
+
+```{r lapply3}
+x <- list(a = matrix(1:4,2,2), b= matrix(1:6,3,2))
+print(x)
+#Anonymous function elt
+lapply(x, function(elt)elt[,1])
+```
+
+### Sapply Function.
+
+Loop, simplifies the result of lapply. 
+* If the result is a list where each element is of length 1, a vector is returned.
+* If the result is a list of vectors of the same length > 1, a matrix is returned.
+* Otherwise, a list is returned.
+```{r sapply}
+x <- list(a=1:5, b=rnorm(10))
+y <-sapply(x, mean)
+print(y)
+class(y)
+```
+
+### Apply Function.
+
+Loop, evaluate a function over the margins of an array.
+* Apply a function to the rows or columns of a matrix
+* It can be used on general arrays.
+```{r apply}
+x <- matrix(rnorm(200),20,10)
+
+#Mean of COLUMNS
+y <-apply(x, 2, mean)
+print(attributes(x))
+print(y)
+class(y)
+
+#Sum of each ROW of the matrix
+z <-apply(x, 1, sum)
+print(z)
+class(z)
+```
+### Mapply Function.
+
+Loop, multivariant function.
+
+```{r mapply}
+x <- mapply(rep, 1:4, 4:1)
+print(x)
+class(x)
+```
+
+### Tapply Function.
+
+Over subsets of vector. Application example: men and women. We need to have a factor variable to differentiate from them. 
+```{r tapply}
+x <- c(rnorm(10),runif(10),rnorm(10,1))
+print(x)
+f <- gl(3,10)
+print(f)
+y <- tapply(x, f, mean,simplify=TRUE)
+print(y)
+class(y)
+z <- tapply(x, f, mean,simplify=FALSE)
+print(z)
+class(z)
+```
+
+### Split Function.
+
+Takes a vector or other objects and splits them based on a factor or list of factors. Always returns a list.
+```{r split}
+#Divide one single vector X into three parts, defined by F...
+x <- c(rnorm(10),runif(10),rnorm(10,1))
+print(x)
+f <- gl(3,10)
+print(f)
+y <- split(x,f)
+print(y)
+class(y)
+
+lapply(split(x,f), mean)
+```
+
+```{r split2}
+library(datasets)
+
+#Split air quality dataset by month...
+s<-split(airquality,airquality$Month)
+print(s)
+class(s)
+
+#Subset by Ozone, Solar Radiation, Wind. Get the means of each variable.
+x <- lapply(s,function(x)colMeans(x[,c("Ozone", "Solar.R","Wind")]))
+print(x)
+class(x)
+
+#Get the means of each variable.
+y <-sapply(s,function(x)colMeans(x[,c("Ozone", "Solar.R","Wind")], na.rm=TRUE))
+str(y)
+print(y)
+class(y)
+
+#Check the interaction() function...
+```
